@@ -1,5 +1,4 @@
-// app/@modal/(.)notes/[id]/page.tsx
-
+import Modal from "@/components/Modal/Modal";
 import { fetchNoteById } from "@/lib/api";
 
 type Props = {
@@ -11,10 +10,10 @@ const NotePreview = async ({ params }: Props) => {
   const note = await fetchNoteById(id);
 
   return (
-    <>
+    <Modal>
       <h2>{note.title}</h2>
       <p>{note.content}</p>
-    </>
+    </Modal>
   );
 };
 

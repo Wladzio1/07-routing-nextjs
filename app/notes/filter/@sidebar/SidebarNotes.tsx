@@ -1,22 +1,24 @@
-import css from "./SidebarNotes.module.scss";
+import Link from "next/link";
+import css from "./SidebarNotes.module.css";
+
+const tags = ["Todo", "Work", "Personal", "Meeting", "Shopping"];
 
 export default function SidebarNotes() {
   return (
     <ul className={css.menuList}>
-      {/* список тегів */}
       <li className={css.menuItem}>
-        <a href={`/notes/filter/all`} className={css.menuLink}>
+        <Link href="/notes/filter/all" className={css.menuLink}>
           All notes
-        </a>
+        </Link>
       </li>
-      <li className={css.menuItem}>
-        <a
-          href={`url до сторінки за відповідним тегом`}
-          className={css.menuLink}
-        >
-          Назва тегу
-        </a>
-      </li>
+
+      {tags.map((tag) => (
+        <li key={tag} className={css.menuItem}>
+          <Link href={`/notes/filter/${tag}`} className={css.menuLink}>
+            {tag}
+          </Link>
+        </li>
+      ))}
     </ul>
   );
 }

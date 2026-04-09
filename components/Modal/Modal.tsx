@@ -7,16 +7,22 @@ type Props = {
   onClose?: () => void;
 };
 
-const Modal = ({ children }: Props) => {
+const Modal = ({ children, onClose }: Props) => {
   const router = useRouter();
 
-  const close = () => router.back();
+  const handleClose = () => {
+    if (onClose) {
+      onClose();
+    } else {
+      router.back();
+    }
+  };
 
   return (
     <div>
       <div>
         {children}
-        <button onClick={close}>Close</button>
+        <button onClick={handleClose}>Close</button>
       </div>
     </div>
   );
