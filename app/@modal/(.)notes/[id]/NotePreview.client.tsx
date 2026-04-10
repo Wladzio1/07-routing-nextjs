@@ -16,6 +16,7 @@ export default function NotePreview({ id }: Props) {
   const { data, isLoading, isError } = useQuery({
     queryKey: ["note", id],
     queryFn: () => fetchNoteById(id),
+    refetchOnMount: false,
   });
 
   if (isLoading) return <p>Loading...</p>;
@@ -25,7 +26,14 @@ export default function NotePreview({ id }: Props) {
   return (
     <Modal onClose={() => router.back()}>
       <h2>{data?.title}</h2>
+
       <p>{data?.content}</p>
+
+      <p>{data?.tag}</p>
+
+      <p>{data?.createdAt}</p>
+
+      <button onClick={() => router.back()}>Close</button>
     </Modal>
   );
 }
