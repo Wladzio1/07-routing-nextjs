@@ -1,23 +1,32 @@
-// app/notes/filter/[...slug]/page.tsx
+"use client";
 
-import { getNotes } from "@/lib/api";
+import { useQuery } from "@tanstack/react-query";
+import { fetchNotes } from "@/lib/api";
 import NoteList from "@/components/NoteList/NoteList";
 
 type Props = {
-  params: Promise<{ slug: string[] }>;
+  tag?: string;
 };
 
-const NotesByCategory = async ({ params }: Props) => {
-  const { slug } = await params;
-  const category = slug[0] === "all" ? undefined : slug[0];
-  const response = await getNotes(category);
+export default function NotesClient({ tag }: Props) {
+  const { data, isLoading, isError } = useQuery({
+    queryKey: ["notes", "", 1, tag],
+    queryFn: () => fetchNotes(1, 12, "", tag),
+  });
+
+  if (isLoading) return <p>Loading...</p>;
+
+  if (isError) return <p>Error loading notes</p>;
 
   return (
     <div>
       <h1>Notes List</h1>
-      {response?.notes?.length > 0 && <NoteList notes={response.notes} />}
+
+      {data?.notes?.length ? (
+        <NoteList notes={data.notes} />
+      ) : (
+        <p>No notes found</p>
+      )}
     </div>
   );
-};
-
-export default NotesByCategory;
+}
